@@ -6,12 +6,15 @@ plugins {
     alias(notation = libs.plugins.kotlin.android)
     alias(notation = libs.plugins.kotlin.compose)
     alias(notation = libs.plugins.kotlin.serialization)
+    alias(notation = libs.plugins.kotlin.symbol.processor)
+    id("com.google.dagger.hilt.android")
 }
 
 kotlin {
     jvmToolchain(jdkVersion = JAVA_VERSION)
     compilerOptions {
         jvmTarget.set(JvmTarget.fromTarget(target = JAVA_VERSION.toString()))
+        freeCompilerArgs.add("-Xannotation-target-all")
     }
 }
 
@@ -41,6 +44,11 @@ android {
     buildFeatures {
         compose = true
     }
+    packaging {
+        resources {
+            excludes += "META-INF/*"
+        }
+    }
 }
 
 dependencies {
@@ -61,19 +69,37 @@ dependencies {
     debugImplementation(dependencyNotation = libs.androidx.ui.tooling)
     debugImplementation(dependencyNotation = libs.androidx.ui.test.manifest)
 
+    // Compose
     implementation(dependencyNotation = libs.androidx.lifecycle.viewmodel.compose)
+    implementation(dependencyNotation = libs.androidx.navigation.compose)
 
+    // Coroutines
     implementation(dependencyNotation = libs.kotlinx.coroutines.core)
     implementation(dependencyNotation = libs.kotlinx.coroutines.android)
 
+    // Coroutine Lifecycle Scopes
     implementation(dependencyNotation = libs.androidx.lifecycle.viewmodel.ktx)
 
+    // Dagger - Hilt
+    implementation(dependencyNotation = libs.hilt.android)
+    ksp(dependencyNotation = libs.hilt.android.compiler)
+    implementation(dependencyNotation = libs.androidx.hilt.lifecycle.viewmodel)
+    ksp(dependencyNotation = libs.androidx.hilt.compiler)
+    implementation(dependencyNotation = libs.androidx.hilt.navigation.compose)
+
+    // Ktor
     implementation(dependencyNotation = libs.ktor.client.core)
     implementation(dependencyNotation = libs.ktor.client.cio)
     implementation(dependencyNotation = libs.ktor.client.serialization)
     implementation(dependencyNotation = libs.ktor.client.websockets)
     implementation(dependencyNotation = libs.ktor.client.logging)
-    debugImplementation(dependencyNotation = libs.logback.classic)
+    implementation("io.ktor:ktor-client-content-negotiation:3.2.3")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:3.2.3")
+//    debugImplementation(dependencyNotation = libs.logback.classic)
+    implementation("org.slf4j:slf4j-api:2.0.17")
+    debugImplementation("com.github.tony19:logback-android:3.0.0")
 
     implementation(dependencyNotation = libs.kotlinx.serialization.json)
+
+    implementation(dependencyNotation = libs.kotlinx.datetime)
 }
