@@ -7,12 +7,7 @@ import com.example.ktor_websocket_application.data.remote.ChatSocketService
 import com.example.ktor_websocket_application.data.remote.MessageService
 import com.example.ktor_websocket_application.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -77,7 +72,10 @@ class ChatViewModel @Inject constructor(
     fun sendMessage() {
         viewModelScope.launch {
             messageText.value.let { message ->
-                if (message.isNotBlank()) chatSocketService.sendMessage(message = message)
+                if (message.isNotBlank()) {
+                    chatSocketService.sendMessage(message = message)
+                    _messageText.value = ""
+                }
             }
         }
     }

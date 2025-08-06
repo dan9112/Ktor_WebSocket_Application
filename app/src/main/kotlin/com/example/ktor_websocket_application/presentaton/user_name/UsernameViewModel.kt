@@ -1,12 +1,10 @@
 package com.example.ktor_websocket_application.presentaton.user_name
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -26,8 +24,11 @@ class UsernameViewModel @Inject constructor() : ViewModel() {
 
     fun onJoinClick() {
         viewModelScope.launch {
-            if (usernameText.value.isNotBlank()) {
-                _onJoinChat.emit(value = usernameText.value)
+            usernameText.value.let {
+                if (it.isNotBlank()) {
+                    _onJoinChat.emit(value = it)
+                    _usernameText.value = ""
+                }
             }
         }
     }

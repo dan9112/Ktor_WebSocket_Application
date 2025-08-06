@@ -7,7 +7,7 @@ plugins {
     alias(notation = libs.plugins.kotlin.compose)
     alias(notation = libs.plugins.kotlin.serialization)
     alias(notation = libs.plugins.kotlin.symbol.processor)
-    id("com.google.dagger.hilt.android")
+    alias(notation = libs.plugins.hilt.android)
 }
 
 kotlin {
@@ -26,8 +26,8 @@ android {
         applicationId = "com.example.ktor_websocket_application"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -61,6 +61,7 @@ dependencies {
     implementation(dependencyNotation = libs.androidx.ui.graphics)
     implementation(dependencyNotation = libs.androidx.ui.tooling.preview)
     implementation(dependencyNotation = libs.androidx.material3)
+    implementation(dependencyNotation = libs.androidx.foundation)
     testImplementation(dependencyNotation = libs.junit)
     androidTestImplementation(dependencyNotation = libs.androidx.junit)
     androidTestImplementation(dependencyNotation = libs.androidx.espresso.core)
@@ -93,11 +94,10 @@ dependencies {
     implementation(dependencyNotation = libs.ktor.client.serialization)
     implementation(dependencyNotation = libs.ktor.client.websockets)
     implementation(dependencyNotation = libs.ktor.client.logging)
-    implementation("io.ktor:ktor-client-content-negotiation:3.2.3")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:3.2.3")
-//    debugImplementation(dependencyNotation = libs.logback.classic)
-    implementation("org.slf4j:slf4j-api:2.0.17")
-    debugImplementation("com.github.tony19:logback-android:3.0.0")
+    implementation(dependencyNotation = libs.ktor.client.content.negotiation)
+    implementation(dependencyNotation = libs.ktor.serialization.kotlinx.json)
+    implementation(dependencyNotation = libs.slf4j.api)
+    debugImplementation(dependencyNotation = libs.logback.android)
 
     implementation(dependencyNotation = libs.kotlinx.serialization.json)
 
